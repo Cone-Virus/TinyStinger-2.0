@@ -21,18 +21,18 @@ def create_db(name):
     try:
         db = sqlite3.connect(db_name)
         format_db(db)
-        print(Fore.GREEN + Style.BRIGHT + "DB Created Sucessfully!")
+        print(Fore.GREEN + Style.BRIGHT + "[+] DB Created Sucessfully")
         return db
     except:
-        print(Fore.RED + Style.BRIGHT + "DB Could not be Created!")
+        print(Fore.RED + Style.BRIGHT + "[-] DB Could not be Created")
         quit()
 
 def load_db(db_name):
     try:
         db = sqlite3.connect(db_name)
-        print(Fore.GREEN + Style.BRIGHT + "DB Successfully Loaded")
+        print(Fore.GREEN + Style.BRIGHT + "[+] DB Successfully Loaded")
         return db
     except:
-        print(Fore.RED + Style.BRIGHT + "DB could not be loaded")
+        print(Fore.RED + Style.BRIGHT + "[-] DB could not be loaded")
         quit()
-     
+
