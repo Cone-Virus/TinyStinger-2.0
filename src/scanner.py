@@ -3,32 +3,60 @@ from colorama import Fore, Back, Style
 import re
 import os
 import requests
+import multiprocessing
 
-def http_valid(targets,http):
-    print(Fore.GREEN + Style.BRIGHT + "[+] Validating URLS")
+def subdomain_finder(targets):
     temp_targets = []
     for target in targets:
-        valid_https = True
-        valid_http = True
-        if target.startswith("http://") or target.startswith("https://"):
-            temp_targets.append(target)
+        if target.startswith("*"):
+            target = target[2:]
+            print(Fore.GREEN + Style.BRIGHT + "[+] Looking for subdomains for " + target)
+            subfinder_output = subprocess.run(['src/subfinder/subfinder','--silent','-d',target], capture_output=True, text=True).stdout.split('\n')
+            for subs in subfinder_output:
+                temp_targets.append(subs)
         else:
-            https_url = "https://" + target
+            temp_targets.append(target)
+    return temp_targets
+
+def http_valid_thread(target):
+    mini_list = []
+    valid_https = True
+    valid_http = True
+    if target.startswith("http://") or target.startswith("https://"):
+        mini_list.append(target)
+        return mini_list
+    else:
+        https_url = "https://" + target
+        try:
+            check = requests.get(https_url,timeout=5)
+        except:
+            valid_https = False
+        if valid_https and int(check.status_code) < 500:
+            mini_list.append(https_url)
+        if Xno and (no or not valid_https):
+            http_url = "http://" + target
             try:
-                check = requests.get(https_url)
+                check = requests.get(http_url,timeout=5)
             except:
-                valid_https = False
-            if valid_https and int(check.status_code) < 500:
-                temp_targets.append(https_url)
-            if http:
-                http_url = "http://" + target
-                try:
-                    check = requests.get(http_url)
-                except:
-                    valid_http = False
-                if valid_http and int(check.status_code) < 500:
-                    temp_targets.append(http_url)
-    print(Fore.GREEN + Style.BRIGHT + "[+] URLS Validated")
+                valid_http = False
+            if valid_http and int(check.status_code) < 500:
+                mini_list.append(http_url)
+        return mini_list
+
+def http_valid(targets,nohttp,Xnohttp,threads):
+    temp_targets = []
+    global no
+    no = nohttp
+    global Xno
+    Xno = Xnohttp
+    print(Fore.GREEN + Style.BRIGHT + "[+] Validating URLS")
+    with multiprocessing.Pool(threads) as p:
+        test = p.map(http_valid_thread,targets)
+    for a in test:
+        for b in a:
+            if b != "":
+                temp_targets.append(b)
+    print(Fore.GREEN + Style.BRIGHT + "\n[+] URLS Validated")
     return temp_targets
 
 def waf_scan(target):
