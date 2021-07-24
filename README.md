@@ -1,5 +1,6 @@
 # TinyStinger V2.0
 - Version 2.0?
+
 There is an earlier rendition of the tinystinger so I decided to make it python based, a sqlite3 DB, and a shell instead of a clunky GUI
 
 - What is it?
