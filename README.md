@@ -27,3 +27,4 @@ chmod +x setup.sh
 ## Credits/Tools Used
 - [favfreak](https://github.com/devanshbatham/FavFreak)
 - [wafw00f](https://github.com/EnableSecurity/wafw00f)
+- [subfinder](https://github.com/projectdiscovery/subfinder)
