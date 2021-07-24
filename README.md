@@ -21,9 +21,9 @@ chmod +x setup.sh
 - Favicon Recon
 - WAF Detection
 - Built-in DB Shell
+- Subdomain Enumeration
 ## TODO
-- [ ] Make a better readme
-- [ ] Add Subdomain Enumeration
+- Make a better readme
 ## Credits/Tools Used
 - [favfreak](https://github.com/devanshbatham/FavFreak)
 - [wafw00f](https://github.com/EnableSecurity/wafw00f)
