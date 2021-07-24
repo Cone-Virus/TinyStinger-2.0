@@ -15,6 +15,7 @@ I am not an expert coder so there will probably be a ton of bugs and if somethin
 chmod +x setup.sh
 ./setup.sh
 ```
+You do need to have GO installed
 ## TODO
 - [ ] Make a better readme
 - [ ] Add Subdomain Enumeration
