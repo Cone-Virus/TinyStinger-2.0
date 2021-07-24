@@ -36,9 +36,6 @@ def file_read(indicator,given_file):
     print(Fore.GREEN + Style.BRIGHT + "[+] All " + indicator + "s Processed")
     return unique_list
 
-def test():
-    print("testing")
-
 def arg_setup():
     parser = argparse.ArgumentParser()
     parser.set_defaults(which="None")
@@ -48,7 +45,9 @@ def arg_setup():
     scan.add_argument("db_name", metavar="<Database Name>", help="The name you would like to give the database")
     scan.add_argument("target_list", metavar="<Target List>", help="List of Targets")
     scan.add_argument("--exclude",  help="List of Out of Scope Targets")
-    scan.add_argument("--nohttp", action='store_false',help="Ignore HTTP")
+    scan.add_argument("--threads", type=int, default=20, help="Threads to use (Default is 20)")
+    scan.add_argument("--nohttp", action='store_false',help="Ignore HTTP but check if HTTPS not found")
+    scan.add_argument("--xnohttp", action='store_false',help="Absolutely no HTTP scans")
     scan.add_argument("--noshell",  action='store_false',help="Don't default to built in shell")
     scan.set_defaults(which="scan")
     # shell options
@@ -74,3 +73,4 @@ Created by: @Cone_Virus
     print()
     print(Fore.YELLOW + Style.BRIGHT + banner)
     print(Style.RESET_ALL)
+
