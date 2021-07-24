@@ -26,11 +26,13 @@ elif args.which == "shell":
 db = store.create_db(db_name)
 
 # Scan targets in file
-target_list = util.target_format(scan.http_valid(util.file_read("Target",target_file),args.nohttp))
+target_list = util.target_format(scan.http_valid(scan.subdomain_finder(util.file_read("Target",target_file)),args.nohttp,args.xnohttp,args.threads))
 
 # If blacklist given
 if exclude_file != None:
     target_list = scan.remove_exclusions(util.file_read("Exclusion",exclude_file),target_list)
+
+# If IP/CIDR list given
 
 # Scan
 for target in target_list:
@@ -48,4 +50,5 @@ for target in target_list:
 # Start shell if option noshell is not set
 if args.noshell:
     store.shell_db(db)
+
 
