@@ -20,7 +20,7 @@ chmod +x setup.sh
 - HTTP/HTTPS Validation
 - Favicon Recon
 - WAF Detection
-- Bult-in DB Shell
+- Built-in DB Shell
 ## TODO
 - [ ] Make a better readme
 - [ ] Add Subdomain Enumeration
