@@ -1,7 +1,8 @@
 echo "[+] Setting up Directory"
 mkdir storage
-echo "[+] Setting up wafw00f"
+echo "[+] Installing Python Dependencies"
 sudo pip3 install -r requirements.txt
+echo "[+] Setting up wafw00f"
 mkdir src/wafw00f
 git clone https://github.com/EnableSecurity/wafw00f src/wafw00f
 sudo src/wafw00f/setup.py install
