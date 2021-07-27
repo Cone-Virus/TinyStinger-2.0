@@ -22,8 +22,10 @@ chmod +x setup.sh
 - WAF Detection
 - Built-in DB Shell
 - Subdomain Enumeration
+- Spidering
 ## TODO
 - Make a better readme
+- Robots.txt enumeration
 ## Credits/Tools Used
 - [favfreak](https://github.com/devanshbatham/FavFreak)
 - [wafw00f](https://github.com/EnableSecurity/wafw00f)
