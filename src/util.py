@@ -49,6 +49,7 @@ def arg_setup():
     scan.add_argument("--nohttp", action='store_false',help="Ignore HTTP but check if HTTPS not found")
     scan.add_argument("--xnohttp", action='store_false',help="Absolutely no HTTP scans")
     scan.add_argument("--noshell",  action='store_false',help="Don't default to built in shell")
+    scan.add_argument("--Sdepth", type=int, default=0, help="Spider Crawl depth, 0 for Infinite (Default 1)")
     scan.set_defaults(which="scan")
     # shell options
     shell = subparsers.add_parser("shell", help="Load scan results into shell")
