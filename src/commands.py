@@ -1,5 +1,6 @@
 import sqlite3
 from colorama import Fore, Back, Style
+import os
 
 def all(cur):
     cur.execute("SELECT url FROM targets")
@@ -15,7 +16,7 @@ def check_url(url,cur):
         print()
         return url
     else:
-        print(Fore.RED + Style.BRIGHT + "\n[-] Target not Found\n")
+        print(Fore.RED + Style.BRIGHT + "\n[-] Target not Found")
         return "N/A"
 
 def mass(check,option,cur):
@@ -40,22 +41,36 @@ def mass(check,option,cur):
             print()
 
 def show(url,data,cur):
-    if data != "stats":
-        print(Fore.RED + Style.BRIGHT + "\n[-] Invalid Data option\n")
+    if data == "stats":
+        opt = " WHERE url == " + '"' + url + '"'
+        cur.execute("SELECT waf,fav FROM targets" + opt)
+        rows = cur.fetchone()
+        print()
+        print(Fore.GREEN + Style.BRIGHT + "-----[WAF Results]-----")
+        if rows[0] == "N/A":
+            print("No WAF Detected")
+        else:
+            print(rows[0])
+        print(Fore.GREEN + Style.BRIGHT + "---[Favicon Results]---")
+        if rows[1] == "N/A":
+            print("None Found")
+        else:
+            print(rows[1])
+        print()
+    elif data == "spider":
+        print(Style.RESET_ALL)
+        opt = " WHERE url == " + '"' + url + '"'
+        cur.execute("SELECT spider FROM targets" + opt) 
+        rows = cur.fetchone()
+        spider = open(rows[0],"r")
+        all_spider = spider.read().split('\n')
+        for lines in all_spider:
+            print(Fore.GREEN + Style.BRIGHT + lines)
+        print()
     else:
-        if data == "stats":
-            opt = " WHERE url == " + '"' + url + '"'
-            cur.execute("SELECT waf,fav FROM targets" + opt)
-            rows = cur.fetchone()
-            print()
-            print(Fore.GREEN + Style.BRIGHT + "-----[WAF Results]-----")
-            if rows[0] == "N/A":
-                print("No WAF Detected")
-            else:
-                print(rows[0])
-            print(Fore.GREEN + Style.BRIGHT + "---[Favicon Results]---")
-            if rows[1] == "N/A":
-                print("None Found")
-            else:
-                print(rows[1])
-            print()
+        print(Fore.RED + Style.BRIGHT + "\n[-] Invalid Data option\n")
+
+def delete(url,cur):
+    cur.execute("DELETE FROM targets WHERE url = '" + url + "'")
+    print(Fore.GREEN + Style.BRIGHT + "[+] Deleted " + url)
+    print()
