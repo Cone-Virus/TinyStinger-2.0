@@ -34,21 +34,26 @@ if exclude_file != None:
 
 # If IP/CIDR list given
 
+# For Formatting
+print()
+
 # Scan
 for target in target_list:
-    # Reset Colors
-    print(Style.RESET_ALL)
+    # Create Storage dir
+    directory = store.target_db(target,db_name)
     # List Target
     print(Fore.BLUE + Style.BRIGHT + "[+] " + target)
     # WAF Scan
     waf_result = scan.waf_scan(target)
     # Fav Scan
     fav_result = scan.fav_scan(target)
-    value = [target,waf_result,fav_result]
+    # Spider Scan
+    spider_result = scan.spider_scan(target,directory,str(args.Sdepth))
+    value = [target,waf_result,fav_result,spider_result]
     store.insert_db(db,value)
+    print(Style.RESET_ALL)
 
 # Start shell if option noshell is not set
 if args.noshell:
     store.shell_db(db)
-
 
