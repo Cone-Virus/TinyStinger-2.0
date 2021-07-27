@@ -5,15 +5,25 @@ import magic
 import commands as com
 import re
 
+def target_db(target,db_name):
+    prot = re.search("(.*)\:\/\/.*\/",target)
+    proto = prot.group(1)
+    direct = re.search("https?\:\/\/(.*)\/",target)
+    result = direct.group(1).replace(".","_")
+    final = "storage/" + db_name + "/" + proto + "_" + result + "/"
+    os.mkdir(final, 0o755)
+    return final
+ 
+
 def format_db(db):
     cur = db.cursor()
     cur.execute('''CREATE TABLE targets
-                   (url, waf, fav)''')
+                   (url, waf, fav, spider)''')
     db.commit()
 
 def insert_db(db,value):
     cur = db.cursor()
-    cur.execute("INSERT INTO targets VALUES ('" + value[0] + "','" + value[1] + "','" + value[2] + "')")
+    cur.execute("INSERT INTO targets VALUES ('" + value[0] + "','" + value[1] + "','" + value[2] + "','" + value[3] +"')")
     db.commit()
 
 def close_db(db):
@@ -22,8 +32,9 @@ def close_db(db):
     quit()
 
 def create_db(name):
-    db_name = "storage/" +name + ".db"
+    db_name = "storage/" + name + "/" +name + ".db"
     try:
+        os.mkdir("storage/" + name, 0o755 )
         db = sqlite3.connect(db_name)
         format_db(db)
         print(Fore.GREEN + Style.BRIGHT + "[+] DB Created Sucessfully")
@@ -69,9 +80,10 @@ select <Target Url> : Select which URL Look through
 select Commands:
 show <data> : Show data
     show Commands:
-    data = stats
+    data = stats,spider
         data Commands:
         stats = fav,waf (AKA the little stuff)
+        spider = Show spider results
 
 delete <Target url> : Delete URL from DB
     """
@@ -91,6 +103,14 @@ def shell_db(db):
             com.all(cur)
         elif command == "help":
             help_menu()
+        elif re.match("^delete .*",command):
+            command = command.split(" ")
+            delete_url = com.check_url(command[1],cur)
+            if delete_url == "N/A":
+                print(Fore.RED + Style.BRIGHT + "[-] Invalid URL\n")
+            else:
+                com.delete(delete_url,cur)
+                db.commit()
         elif re.match("^select .*",command):
             command = command.split(" ")
             url = com.check_url(command[1],cur)
@@ -106,4 +126,5 @@ def shell_db(db):
         else:
             print(Fore.RED + Style.BRIGHT + "[-] Unrecognized Command")
             help_menu()
+
 
