@@ -1,8 +1,4 @@
 colorama
-os
-sys
-subprocess
-magic
-re
+python-magic
 argparse
 pyqt5 
