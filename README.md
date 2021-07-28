@@ -16,6 +16,11 @@ I am not an expert coder so there will probably be a ton of bugs and if somethin
 chmod +x setup.sh
 ./setup.sh
 ```
+## Usage
+```
+python3 TinyStinger.py
+```
+!!!Only works on Linux!!!
 ## Features
 - HTTP/HTTPS Validation
 - Favicon Recon
