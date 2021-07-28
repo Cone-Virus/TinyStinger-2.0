@@ -1,5 +1,4 @@
 import subprocess
-from colorama import Fore, Back, Style
 import re
 import os
 import requests
@@ -10,7 +9,6 @@ def subdomain_finder(targets):
     for target in targets:
         if target.startswith("*"):
             target = target[2:]
-            print(Fore.GREEN + Style.BRIGHT + "[+] Looking for subdomains for " + target)
             subfinder_output = subprocess.run(['src/subfinder/subfinder','--silent','-d',target], capture_output=True, text=True).stdout.split('\n')
             for subs in subfinder_output:
                 temp_targets.append(subs)
@@ -49,14 +47,12 @@ def http_valid(targets,nohttp,Xnohttp,threads):
     no = nohttp
     global Xno
     Xno = Xnohttp
-    print(Fore.YELLOW + Style.BRIGHT + "[%] Validating URLS",end='\r')
     with multiprocessing.Pool(threads) as p:
         test = p.map(http_valid_thread,targets)
     for a in test:
         for b in a:
             if b != "":
                 temp_targets.append(b)
-    print(Fore.GREEN + Style.BRIGHT + "[+] URLS Validated     ")
     return temp_targets
 
 def waf_scan(target):
@@ -65,10 +61,8 @@ def waf_scan(target):
     for row in waf_results:
         if '[+]' in row:
             if 'WAF' in row:
-                print(Fore.RED + Style.BRIGHT + "[-] WAF Found")
                 waf_type = re.search("behind (.*) WAF",row)
                 return waf_type.group(1)
-    print(Fore.GREEN + Style.BRIGHT + "[+] No WAF Found")
     return "N/A"
 
 def remove_exclusions(exclusions,targets):
@@ -80,7 +74,6 @@ def remove_exclusions(exclusions,targets):
             if re.match(".*" + ex + ".*",target):
                 exclusion_bool = True
             else:
-                print(Fore.MAGENTA + Style.BRIGHT + "[+] Removing Exclusions" + num * ".", end='\r')
                 num = num + 1
                 if num == 4:
                     num = 0
@@ -88,7 +81,6 @@ def remove_exclusions(exclusions,targets):
             exclusion_bool = False
         else:
             temp_targets.append(target)
-    print()
     return temp_targets
 
 def fav_scan(target):
@@ -107,15 +99,12 @@ def fav_scan(target):
         elif hash_num in row and '~' not in row:
             fav_ID = row.split(" ")[0]
             fav_ID = fav_ID.replace('[','').replace(']','')
-            print(Fore.GREEN + Style.BRIGHT + "[+] Favicon Identified")
             os.remove("temp_fav_target.txt")
             return fav_ID
         elif hash_num in row and '~' in row:
-            print(Fore.MAGENTA + Style.DIM + "[/] Favicon not Identified but Hash Found")
             os.remove("temp_fav_target.txt")
             return hash_num
     os.remove("temp_fav_target.txt")
-    print(Fore.RED + Style.BRIGHT + "[-] Favicon could not be Identified")
     return "N/A"
 
 def clean_spider(spider_list):
@@ -140,7 +129,6 @@ def clean_spider(spider_list):
 
 
 def spider_scan(target,directory,depth):
-    print(Fore.YELLOW + Style.BRIGHT + "[%] Spidering Started",end='\r')
     general_list = []
     link_list = []
     href_list = []
@@ -230,10 +218,6 @@ def spider_scan(target,directory,depth):
     # Close File
     f.close()
 
-    print(Fore.GREEN + Style.BRIGHT + "[+] Spidering Done          ")
-
     # Return path to spider.txt
     spider_txt = directory + "spider.txt"
     return spider_txt
-
-
