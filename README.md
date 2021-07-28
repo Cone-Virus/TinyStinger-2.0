@@ -1,7 +1,7 @@
 # TinyStinger V2.0
 - Version 2.0?
 
-There is an earlier rendition of the tinystinger so I decided to make it python based, a sqlite3 DB, and a shell instead of a clunky GUI
+There is an earlier rendition of the tinystinger so I decided to make it python based and a sqlite3 DB
 
 - What is it?
 
@@ -23,8 +23,10 @@ chmod +x setup.sh
 - Built-in DB Shell
 - Subdomain Enumeration
 - Spidering
+- A GUI
 ## TODO
 - Make a better readme
+- Make GUI Look Nice
 - Robots.txt enumeration
 ## Credits/Tools Used
 - [favfreak](https://github.com/devanshbatham/FavFreak)
