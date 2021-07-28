@@ -1,4 +1,3 @@
 python-magic
 argparse
 pyqt5 
-time
