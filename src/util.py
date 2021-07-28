@@ -1,5 +1,4 @@
 import os
-from colorama import Fore, Back, Style
 import magic
 import argparse
 
