@@ -33,3 +33,4 @@ chmod +x setup.sh
 - [wafw00f](https://github.com/EnableSecurity/wafw00f)
 - [subfinder](https://github.com/projectdiscovery/subfinder)
 - [gospider](https://github.com/jaeles-project/gospider)
+- [QT Designer](https://www.qt.io/)
